@@ -1,0 +1,54 @@
+<div class="container-fluid vh-100">
+    <div class="register-form container w-25 position-absolute top-50 start-50 translate-middle border border-2 rounded-4 p-5">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <div class="form-group m-1">
+                <label for="userName">Username</label>
+                <input type="text" formControlName="userName" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f['userName'].errors || error }" id="userName" />
+                <div *ngIf="submitted && f['userName'].errors" class="invalid-feedback">
+                    <div *ngIf="f['userName'].errors['required']">Username is required</div>
+                </div>
+                <div *ngIf="error" class="invalid-feedback">This Username is not available</div>
+            </div>
+
+            <div class="form-group m-1">
+                <label for="password">Password</label>
+                <input type="password" formControlName="password" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f['password'].errors }" id="password" />
+                <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+                    <div *ngIf="f['password'].errors['required']">Password is required</div>
+                </div>
+            </div>
+
+            <div class="form-group m-1">
+                <label for="biography">Biography</label>
+                <input type="text" formControlName="biography" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f['biography'].errors }" id="biography" />
+                <div *ngIf="submitted && f['biography'].errors" class="invalid-feedback">
+                    <div *ngIf="f['biography'].errors['required']">Biography is required</div>
+                </div>
+            </div>
+
+            <div class="form-group mb-4">
+                <label for="nationality">Nationality</label>
+                <select class="form-control" id="nationality" formControlName="nationality" [ngClass]="{ 'is-invalid': submitted && f['nationality'].errors }">
+                    <option value="">--Select your nationality--</option>
+                    <option value="Indian">Indian</option>
+                    <option value="Britisher">Britisher</option>
+                    <option value="American">American</option>
+                    <option value="Canadian">Canadian</option>
+                    <option value="French">French</option>
+                </select>
+                <div *ngIf="submitted && f['nationality'].errors" class="invalid-feedback">
+                    <div *ngIf="f['nationality'].errors['required']">Nationality is required</div>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-center my-3">
+                <button type="submit" class="btn btn-primary w-50 ">Sign Up</button>
+            </div>
+
+            <p class="w-100 text-center">Already have an account? <a routerLink="/login">Login here</a></p>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,199 @@
+<header class="d-flex justify-content-between align-items-center p-3 bg-primary text-white">
+    <h1 class="h4">Book Inventory Management</h1>
+    <div class="dropdown">
+        <button class="btn btn-light px-5 dropdown-toggle" type="button" data-bs-toggle="dropdown"
+            aria-expanded="false">New</button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal">Book</a></li>
+            <hr class="dropdown-divider">
+            <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal2">Author</a></li>
+        </ul>
+    </div>
+</header>
+
+<div class="d-flex">
+    <nav class="bg-light border sidebar vh-100 px-5">
+        <ul class="nav flex-column">
+            <li class="nav-item my-2 py-2">
+                <a class="nav-link active" href="#">Overview</a>
+            </li>
+            <li class="nav-item my-2 py-2">
+                <a class="nav-link" href="#">Books</a>
+            </li>
+            <li class="nav-item my-2 py-2">
+                <a class="nav-link" href="#">Authors</a>
+            </li>
+        </ul>
+    </nav>
+
+    <main class="flex-grow-1 py-3 px-5">
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <div class="card py-2">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Books</h5>
+                        <p class="card-text">{{books.length}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card py-2">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Authors</h5>
+                        <p class="card-text">{{authors.length}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 mb-3" *ngFor="let book of books">
+                <div class="card book-card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{book.bookTitle}}</h5>
+                        <p class="card-text">{{book.description}}</p>
+                        <p class="card-text"><small class="text-muted">Category: {{book.category}}</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" #closeBookForm aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="bookForm" (ngSubmit)="onBookFormSubmit()">
+                    <div class="form-group m-1">
+                        <label for="bookTitle">Book Title</label>
+                        <input type="text" formControlName="bookTitle" class="form-control"
+                            [ngClass]="{ 'is-invalid': submitted && f['bookTitle'].errors }" id="bookTitle" />
+                        <div *ngIf="submitted && f['bookTitle'].errors" class="invalid-feedback">
+                            <div *ngIf="f['bookTitle'].errors['required']">Book Title is required</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group m-1">
+                        <label for="author">Author</label>
+                        <select class="form-control" id="author" formControlName="author">
+                            <option *ngFor="let author of authors" [value]="author.authorName">{{ author.authorName }}</option>
+                        </select>
+                        <div *ngIf="submitted && f['author'].errors" class="invalid-feedback">
+                            <div *ngIf="f['author'].errors['required']">Author is required</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group m-1">
+                        <label for="category">Category</label>
+                        <select class="form-control" id="category" formControlName="category">
+                            <option *ngFor="let category of categories" [value]="category.categoryName">{{ category.categoryName }}
+                            </option>
+                        </select>
+                        <div *ngIf="submitted && f['category'].errors" class="invalid-feedback">
+                            <div *ngIf="f['category'].errors['required']">Category is required</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group m-1">
+                        <label for="ISBN">ISBN</label>
+                        <input type="number" formControlName="ISBN" class="form-control"
+                            [ngClass]="{ 'is-invalid': submitted && f['ISBN'].errors }" id="ISBN" />
+                        <div *ngIf="submitted && f['ISBN'].errors" class="invalid-feedback">
+                            <div *ngIf="f['ISBN'].errors['required']">ISBN is required</div>
+                            <div *ngIf="f['ISBN'].errors['pattern']">Please enter 13 digit valis ISBN number</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group m-1">
+                        <label for="description">Description</label>
+                        <textarea id="description" formControlName="description" class="form-control"
+                            [ngClass]="{ 'is-invalid': submitted && f['description'].errors }" rows="5"></textarea>
+                        <div *ngIf="submitted && f['description'].errors" class="invalid-feedback">
+                            <div *ngIf="f['description'].errors['required']">Description is required</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group m-1">
+                        <label for="price">Price</label>
+                        <input type="number" formControlName="price" class="form-control"
+                            [ngClass]="{ 'is-invalid': submitted && f['price'].errors }" id="price" />
+                        <div *ngIf="submitted && f['price'].errors" class="invalid-feedback">
+                            <div *ngIf="f['price'].errors['required']">Price is required</div>
+                            <div *ngIf="f['price'].errors['min']">Price must be greater than zero</div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-center my-3">
+                        <button type="submit" class="btn btn-primary w-50 ">Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" #close aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="authorForm" (ngSubmit)="onAuthorFormSubmit()">
+                    <div class="form-group m-1">
+                        <label for="userName">Username</label>
+                        <input type="text" formControlName="userName" class="form-control"
+                            [ngClass]="{ 'is-invalid': submitted && authorf['userName'].errors || error }" id="userName" />
+                        <div *ngIf="submitted && authorf['userName'].errors" class="invalid-feedback">
+                            <div *ngIf="authorf['userName'].errors['required']">Username is required</div>
+                        </div>
+                        <div *ngIf="error" class="invalid-feedback">This Username is not available</div>
+                    </div>
+        
+                    <div class="form-group m-1">
+                        <label for="password">Password</label>
+                        <input type="password" formControlName="password" class="form-control"
+                            [ngClass]="{ 'is-invalid': submitted && authorf['password'].errors }" id="password" />
+                        <div *ngIf="submitted && authorf['password'].errors" class="invalid-feedback">
+                            <div *ngIf="authorf['password'].errors['required']">Password is required</div>
+                        </div>
+                    </div>
+        
+                    <div class="form-group m-1">
+                        <label for="biography">Biography</label>
+                        <input type="text" formControlName="biography" class="form-control"
+                            [ngClass]="{ 'is-invalid': submitted && authorf['biography'].errors }" id="biography" />
+                        <div *ngIf="submitted && authorf['biography'].errors" class="invalid-feedback">
+                            <div *ngIf="authorf['biography'].errors['required']">Biography is required</div>
+                        </div>
+                    </div>
+        
+                    <div class="form-group mb-4 m-1">
+                        <label for="nationality">Nationality</label>
+                        <select class="form-control" id="nationality" formControlName="nationality" [ngClass]="{ 'is-invalid': submitted && authorf['nationality'].errors }">
+                            <option value="">--Select your nationality--</option>
+                            <option value="Indian">Indian</option>
+                            <option value="Britisher">Britisher</option>
+                            <option value="American">American</option>
+                            <option value="Canadian">Canadian</option>
+                            <option value="French">French</option>
+                        </select>
+                        <div *ngIf="submitted && authorf['nationality'].errors" class="invalid-feedback">
+                            <div *ngIf="authorf['nationality'].errors['required']">Nationality is required</div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-center my-3">
+                        <button type="submit" class="btn btn-primary w-50" >Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
