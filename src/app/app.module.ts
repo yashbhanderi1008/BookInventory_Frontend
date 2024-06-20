@@ -5,6 +5,8 @@ import { AppComponent } from './app.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BaseUrlInterceptor } from './core/interceptors/base-url.interceptor';
 import { TokenInterceptor } from './core/interceptors/token.interceptor';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatTableModule} from '@angular/material/table';
 
 @NgModule({
   declarations: [
@@ -13,7 +15,9 @@ import { TokenInterceptor } from './core/interceptors/token.interceptor';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    MatTableModule,
+    BrowserAnimationsModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: BaseUrlInterceptor, multi: true },

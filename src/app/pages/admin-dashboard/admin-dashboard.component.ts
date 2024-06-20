@@ -9,19 +9,22 @@ import { DataRetrivalService } from 'src/app/core/services/data-retrival.service
 })
 export class AdminDashboardComponent {
 
-  books: any = []
-  authors: any = []
-  categories: any = []
+  data: any = {
+    books: [],
+    authors: [],
+    categories: []
+  }
   bookForm!: FormGroup
   authorForm!: FormGroup
   submitted = false;
+  currentComponent: string = 'overview';
   error: string | null = null;
   userName!: string;
   password!: string;
   biography!: string;
   nationality!: string;
-  @ViewChild('close')close!:ElementRef
-  @ViewChild('closeBookForm')closeBookForm!:ElementRef
+  @ViewChild('close') close!: ElementRef
+  @ViewChild('closeBookForm') closeBookForm!: ElementRef
 
   constructor(private dataRetrivalService: DataRetrivalService, private formBuilder: FormBuilder) { }
 
@@ -33,7 +36,7 @@ export class AdminDashboardComponent {
   }
 
   ngOnChange() {
-    this.books
+    this.data.books
   }
 
   initForm() {
@@ -71,7 +74,7 @@ export class AdminDashboardComponent {
 
     this.dataRetrivalService.addBookByAdmin(this.bookForm.value).subscribe({
       next: (response) => {
-        this.books.push(response.data);
+        this.data.books.push(response.data);
       },
       error: (err) => {
         console.log(err);
@@ -95,7 +98,7 @@ export class AdminDashboardComponent {
 
     this.dataRetrivalService.addAuthorByAdmin(this.userName, this.password, this.biography, this.nationality).subscribe({
       next: (response) => {
-        this.authors.push(response.data);
+        this.data.authors.push(response.data);
       },
       error: (err) => {
         this.error = err.error.message
@@ -108,7 +111,7 @@ export class AdminDashboardComponent {
   getAllBook() {
     this.dataRetrivalService.getAllBooksByAdmin().subscribe({
       next: (response) => {
-        this.books = response.data
+        this.data.books = response.data
       },
       error: (err) => {
         console.log(err);
@@ -119,7 +122,7 @@ export class AdminDashboardComponent {
   getAllAuthor() {
     this.dataRetrivalService.getAllAuthor().subscribe({
       next: (response) => {
-        this.authors = response.data
+        this.data.authors = response.data
       },
       error: (err) => {
         console.log(err);
@@ -130,11 +133,15 @@ export class AdminDashboardComponent {
   getAllCategory() {
     this.dataRetrivalService.getAllCategory().subscribe({
       next: (response) => {
-        this.categories = response.data
+        this.data.categories = response.data
       },
       error: (err) => {
         console.log(err);
       }
     })
+  }
+
+  showComponent(component: string) {
+    this.currentComponent = component;
   }
 }

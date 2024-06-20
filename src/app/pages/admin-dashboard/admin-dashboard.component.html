@@ -12,17 +12,11 @@
 </header>
 
 <div class="d-flex">
-    <nav class="bg-light border sidebar vh-100 px-5">
-        <ul class="nav flex-column">
-            <li class="nav-item my-2 py-2">
-                <a class="nav-link active" href="#">Overview</a>
-            </li>
-            <li class="nav-item my-2 py-2">
-                <a class="nav-link" href="#">Books</a>
-            </li>
-            <li class="nav-item my-2 py-2">
-                <a class="nav-link" href="#">Authors</a>
-            </li>
+    <nav class="sidebar vh-100">
+        <ul class="nav flex-column list-unstyled components">
+            <li><a (click)="showComponent('overview')">Overview</a></li>
+            <li><a (click)="showComponent('books')">Books</a></li>
+            <li><a (click)="showComponent('authors')">Authors</a></li>
         </ul>
     </nav>
 
@@ -32,7 +26,7 @@
                 <div class="card py-2">
                     <div class="card-body">
                         <h5 class="card-title">Total Books</h5>
-                        <p class="card-text">{{books.length}}</p>
+                        <p class="card-text">{{data.books.length}}</p>
                     </div>
                 </div>
             </div>
@@ -40,23 +34,15 @@
                 <div class="card py-2">
                     <div class="card-body">
                         <h5 class="card-title">Total Authors</h5>
-                        <p class="card-text">{{authors.length}}</p>
+                        <p class="card-text">{{data.authors.length}}</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-4 mb-3" *ngFor="let book of books">
-                <div class="card book-card">
-                    <div class="card-body">
-                        <h5 class="card-title">{{book.bookTitle}}</h5>
-                        <p class="card-text">{{book.description}}</p>
-                        <p class="card-text"><small class="text-muted">Category: {{book.category}}</small></p>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <app-overview *ngIf="currentComponent === 'overview'" [data]="data"></app-overview>
+        <app-books *ngIf="currentComponent === 'books'" [data]="data"></app-books>
+        <app-authors *ngIf="currentComponent === 'authors'" [data]="data"></app-authors>
     </main>
 </div>
 
@@ -65,7 +51,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" #closeBookForm aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" #closeBookForm
+                    aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form [formGroup]="bookForm" (ngSubmit)="onBookFormSubmit()">
@@ -81,7 +68,8 @@
                     <div class="form-group m-1">
                         <label for="author">Author</label>
                         <select class="form-control" id="author" formControlName="author">
-                            <option *ngFor="let author of authors" [value]="author.authorName">{{ author.authorName }}</option>
+                            <option *ngFor="let author of data.authors" [value]="author.authorName">{{ author.authorName }}
+                            </option>
                         </select>
                         <div *ngIf="submitted && f['author'].errors" class="invalid-feedback">
                             <div *ngIf="f['author'].errors['required']">Author is required</div>
@@ -91,7 +79,8 @@
                     <div class="form-group m-1">
                         <label for="category">Category</label>
                         <select class="form-control" id="category" formControlName="category">
-                            <option *ngFor="let category of categories" [value]="category.categoryName">{{ category.categoryName }}
+                            <option *ngFor="let category of data.categories" [value]="category.categoryName">{{
+                                category.categoryName }}
                             </option>
                         </select>
                         <div *ngIf="submitted && f['category'].errors" class="invalid-feedback">
@@ -149,13 +138,14 @@
                     <div class="form-group m-1">
                         <label for="userName">Username</label>
                         <input type="text" formControlName="userName" class="form-control"
-                            [ngClass]="{ 'is-invalid': submitted && authorf['userName'].errors || error }" id="userName" />
+                            [ngClass]="{ 'is-invalid': submitted && authorf['userName'].errors || error }"
+                            id="userName" />
                         <div *ngIf="submitted && authorf['userName'].errors" class="invalid-feedback">
                             <div *ngIf="authorf['userName'].errors['required']">Username is required</div>
                         </div>
                         <div *ngIf="error" class="invalid-feedback">This Username is not available</div>
                     </div>
-        
+
                     <div class="form-group m-1">
                         <label for="password">Password</label>
                         <input type="password" formControlName="password" class="form-control"
@@ -164,7 +154,7 @@
                             <div *ngIf="authorf['password'].errors['required']">Password is required</div>
                         </div>
                     </div>
-        
+
                     <div class="form-group m-1">
                         <label for="biography">Biography</label>
                         <input type="text" formControlName="biography" class="form-control"
@@ -173,10 +163,11 @@
                             <div *ngIf="authorf['biography'].errors['required']">Biography is required</div>
                         </div>
                     </div>
-        
+
                     <div class="form-group mb-4 m-1">
                         <label for="nationality">Nationality</label>
-                        <select class="form-control" id="nationality" formControlName="nationality" [ngClass]="{ 'is-invalid': submitted && authorf['nationality'].errors }">
+                        <select class="form-control" id="nationality" formControlName="nationality"
+                            [ngClass]="{ 'is-invalid': submitted && authorf['nationality'].errors }">
                             <option value="">--Select your nationality--</option>
                             <option value="Indian">Indian</option>
                             <option value="Britisher">Britisher</option>
@@ -190,7 +181,7 @@
                     </div>
 
                     <div class="d-flex justify-content-center my-3">
-                        <button type="submit" class="btn btn-primary w-50" >Add</button>
+                        <button type="submit" class="btn btn-primary w-50">Add</button>
                     </div>
                 </form>
             </div>
