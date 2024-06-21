@@ -17,6 +17,8 @@ export class AuthorsComponent implements AfterViewInit, OnChanges {
 
   @Input() data : any;
 
+  openAuthor: any;
+
   constructor() {
     this.dataSource = new MatTableDataSource<any>([]);
   }
@@ -39,5 +41,9 @@ export class AuthorsComponent implements AfterViewInit, OnChanges {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  openOffcanvas(row: any){
+    this.openAuthor = row;
   }
 }

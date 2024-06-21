@@ -41,7 +41,7 @@
         </div>
 
         <app-overview *ngIf="currentComponent === 'overview'" [data]="data"></app-overview>
-        <app-books *ngIf="currentComponent === 'books'" [data]="data"></app-books>
+        <app-books *ngIf="currentComponent === 'books'" [data]="data" (bookUpdate)="onBookUpdate($event)" (bookDelete)="onBookDelete($event)"></app-books>
         <app-authors *ngIf="currentComponent === 'authors'" [data]="data"></app-authors>
     </main>
 </div>

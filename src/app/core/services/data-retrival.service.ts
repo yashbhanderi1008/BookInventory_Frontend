@@ -28,4 +28,12 @@ export class DataRetrivalService {
   addAuthorByAdmin(authorName: string, password: string, biography: string, nationality: string):Observable<any>{
     return this.http.post('admin/addAuthor', { authorName, password, biography, nationality })
   }
+
+  updateBookByAdmin(book: any, bookId: any): Observable<any>{
+    return this.http.put(`admin/bookUpdate/${bookId}`, book)
+  }
+
+  deleteBookByAdmin(bookId: any): Observable<any>{
+    return this.http.delete(`admin/bookDelete/${bookId}`)
+  }
 }

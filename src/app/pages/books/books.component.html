@@ -13,7 +13,8 @@
 
     <div matColumnDef="bookTitle">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Book Title </th>
-      <td mat-cell *matCellDef="let row"> {{row.bookTitle}}% </td>
+      <td mat-cell *matCellDef="let row" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions"
+        (click)="openOffcanvas(row)"> {{row.bookTitle}} </td>
     </div>
 
     <div matColumnDef="author">
@@ -31,11 +32,6 @@
       <td mat-cell *matCellDef="let row"> {{row.price}} </td>
     </div>
 
-    <!-- <div matColumnDef="action">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Action </th>
-      <td mat-cell *matCellDef="let row"> {{row.fruit}} </td>
-    </div> -->
-
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
@@ -45,4 +41,83 @@
   </table>
 
   <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+</div>
+
+<div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions"
+  aria-labelledby="offcanvasWithBothOptionsLabel">
+  <div class="offcanvas-header" *ngIf="openBook">
+    <h1 class="offcanvas-title mb-0" id="offcanvasWithBothOptionsLabel">{{openBook.bookTitle}}</h1>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close" #closeOffCanvas></button>
+  </div>
+  <div class="offcanvas-body" *ngIf="openBook">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-group m-1">
+        <label for="bookTitle">Book Title</label>
+        <input type="text" formControlName="bookTitle" class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f['bookTitle'].errors }" id="bookTitle" />
+        <div *ngIf="submitted && f['bookTitle'].errors" class="invalid-feedback">
+          <div *ngIf="f['bookTitle'].errors['required']">Book Title is required</div>
+        </div>
+      </div>
+
+      <div class="form-group m-1">
+        <label for="author">Author</label>
+        <select class="form-control" id="author" formControlName="author">
+          <option *ngFor="let author of data.authors" [value]="author.authorName">{{ author.authorName }}
+          </option>
+        </select>
+        <div *ngIf="submitted && f['author'].errors" class="invalid-feedback">
+          <div *ngIf="f['author'].errors['required']">Author is required</div>
+        </div>
+      </div>
+
+      <div class="form-group m-1">
+        <label for="category">Category</label>
+        <select class="form-control" id="category" formControlName="category">
+          <option *ngFor="let category of data.categories" [value]="category.categoryName">{{
+            category.categoryName }}
+          </option>
+        </select>
+        <div *ngIf="submitted && f['category'].errors" class="invalid-feedback">
+          <div *ngIf="f['category'].errors['required']">Category is required</div>
+        </div>
+      </div>
+
+      <div class="form-group m-1">
+        <label for="ISBN">ISBN</label>
+        <input type="number" formControlName="ISBN" class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f['ISBN'].errors }" id="ISBN" />
+        <div *ngIf="submitted && f['ISBN'].errors" class="invalid-feedback">
+          <div *ngIf="f['ISBN'].errors['required']">ISBN is required</div>
+          <div *ngIf="f['ISBN'].errors['pattern']">Please enter 13 digit valis ISBN number</div>
+        </div>
+      </div>
+
+      <div class="form-group m-1">
+        <label for="description">Description</label>
+        <textarea id="description" formControlName="description" class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f['description'].errors }" rows="5"></textarea>
+        <div *ngIf="submitted && f['description'].errors" class="invalid-feedback">
+          <div *ngIf="f['description'].errors['required']">Description is required</div>
+        </div>
+      </div>
+
+      <div class="form-group m-1">
+        <label for="price">Price</label>
+        <input type="number" formControlName="price" class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f['price'].errors }" id="price" />
+        <div *ngIf="submitted && f['price'].errors" class="invalid-feedback">
+          <div *ngIf="f['price'].errors['required']">Price is required</div>
+          <div *ngIf="f['price'].errors['min']">Price must be greater than zero</div>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-end my-3" *ngIf="updateBook">
+        <button type="submit" class="btn btn-primary w-25">update</button>
+      </div>
+    </form>
+
+    <button type="button" class="btn btn-primary m-1 w-100 mt-5" (click)="formEditable()">Update</button>
+    <button type="button" class="btn btn-danger m-1 w-100" (click)="onDelete()">Delete</button>
+  </div>
 </div>

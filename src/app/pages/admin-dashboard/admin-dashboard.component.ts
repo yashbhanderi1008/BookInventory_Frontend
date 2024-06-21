@@ -26,7 +26,9 @@ export class AdminDashboardComponent {
   @ViewChild('close') close!: ElementRef
   @ViewChild('closeBookForm') closeBookForm!: ElementRef
 
-  constructor(private dataRetrivalService: DataRetrivalService, private formBuilder: FormBuilder) { }
+  constructor(
+    private dataRetrivalService: DataRetrivalService,
+    private formBuilder: FormBuilder) { }
 
   ngOnInit() {
     this.getAllBook();
@@ -67,7 +69,6 @@ export class AdminDashboardComponent {
 
   onBookFormSubmit() {
     this.submitted = true;
-
     if (this.bookForm.invalid) {
       return;
     }
@@ -143,5 +144,15 @@ export class AdminDashboardComponent {
 
   showComponent(component: string) {
     this.currentComponent = component;
+  }
+
+  onBookUpdate(updateBook: any) {
+    const updatedIndex = this.data.books.findIndex((book: any) => book._id === updateBook._id);
+    this.data.books[updatedIndex] = updateBook
+  }
+
+  onBookDelete(bookId: any) {
+    const deletedIndex = this.data.books.findIndex((book: any) => book._id === bookId);
+    this.data.books.splice(deletedIndex, 1);
   }
 }
